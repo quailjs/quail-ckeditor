@@ -1,0 +1,15 @@
+{
+  "name": "quail-ckeditor",
+  "version": "0.0.1",
+  "main": "dist/*",
+  "ignore": [
+    ".jshintrc"
+  ],
+  "dependencies": {
+    "quail": "~2.2.0"
+  },
+  "devDependencies": {
+    "qunit": "~1.14.0",
+    "ckeditor": "~4.4.1"
+  }
+}
