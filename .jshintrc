@@ -7,7 +7,9 @@
   "expr": true,
   "forin": true,
   "globals": {
-    "quail": true
+    "quail": true,
+    "CKEDITOR": true,
+    "editor": true
   },
   "immed": true,
   "indent": 2,

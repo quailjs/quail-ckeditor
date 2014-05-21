@@ -15,13 +15,22 @@ module.exports = function(grunt) {
     },
     concat: {
       options: {
-        banner: '<%= pkg.options.banner %>' + "\n" + ';(function($) {' + "\n",
-        footer: "\n" + '})(jQuery);',
+        banner: '<%= pkg.options.banner %>' + "\n" + ';(function($, CKEDITOR) {' + "\n",
+        footer: "\n" + '})(jQuery, CKEDITOR);',
         stripBanners: true
       },
       dist: {
         src: ['src/*.js'],
         dest: 'plugin.js'
+      }
+    },
+    watch: {
+      scripts: {
+        files: ['src/**/*.js'],
+        tasks: ['concat', 'jshint', 'uglify'],
+        options: {
+          spawn: false
+        }
       }
     },
     uglify: {
