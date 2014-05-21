@@ -9,7 +9,8 @@
   "globals": {
     "quail": true,
     "CKEDITOR": true,
-    "editor": true
+    "editor": true,
+    "quailCss": true
   },
   "immed": true,
   "indent": 2,

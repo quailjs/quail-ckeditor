@@ -17,10 +17,16 @@ module.exports = function(grunt) {
       options: {
         banner: '<%= pkg.options.banner %>' + "\n" + ';(function($, CKEDITOR) {' + "\n",
         footer: "\n" + '})(jQuery, CKEDITOR);',
-        stripBanners: true
+        stripBanners: true,
+        process: function(src, filepath) {
+          if(filepath.search('.css') !== -1) {
+            return 'var quailCss = "' + src.replace(/\n/g, '') + '";';
+          }
+          return src;
+        }
       },
       dist: {
-        src: ['src/*.js'],
+        src: [ 'src/style.css', 'src/*.js'],
         dest: 'plugin.js'
       }
     },

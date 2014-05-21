@@ -1,0 +1,36 @@
+._quail-accessibility-result {
+  border-radius: 5px;
+  border-style: dashed;
+  border-width: 2px;
+  cursor: pointer !important;
+}
+
+._quail-accessibility-result._quail-severe, ._quail-accessibility-link.severe img, ._quail-accessibility-result._quail-_severe {
+  border-color: #994141;
+}
+
+._quail-accessibility-result._quail-moderate, ._quail-accessibility-link.moderate img, ._quail-accessibility-result._quail-_moderate {
+  border-color: #2e71a0;
+}
+
+._quail-accessibility-result._quail-suggestion, ._quail-accessibility-link.suggestion img, ._quail-accessibility-result._quail-_suggestion {
+  border-color: #36af60;
+}
+
+._quail-accessibility-result img {
+  padding: 3px;
+}
+
+._quail-accessibility-icon img, ._quail-accessibility-icon-current {
+  width: 23px;
+  height: 23px;
+  margin-right: -23px;
+  display: inline-block;
+  z-index: 1000;
+  position: absolute;
+}
+
+._quail-accessibility-icon-current {
+  margin-right: auto;
+  margin-left: -23px;
+}

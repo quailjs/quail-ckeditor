@@ -6,6 +6,6 @@
   			{ name: 'paragraph', items : [ 'NumberedList','BulletedList' ] },
   			{ name: 'tools', items : [ 'Maximize' ] }
       ],
-      extraPlugins: 'quail'
+      extraPlugins: 'quail,dialog'
     });
 })(jQuery, CKEDITOR);
