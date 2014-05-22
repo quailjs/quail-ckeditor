@@ -8,6 +8,12 @@ CKEDITOR.plugins.add( 'quail', {
 
   quailTests : { },
 
+  severity : {
+    0 : 'suggestion',
+    0.5 : 'moderate',
+    1 : 'severe'
+  },
+
   init: function( editor ) {
     if (typeof editor.config.quail === 'undefined' ||
         typeof editor.config.quail.tests === 'undefined') {
@@ -101,13 +107,12 @@ CKEDITOR.plugins.add( 'quail', {
   highlightElement : function($element, test, editor) {
     if (!$element.hasClass('_quail-accessibility-result')) {
       $element.addClass('_quail-accessibility-result')
-              .addClass('_quail-' + test.get('severity'));
+              .addClass('_quail-' + this.severity[test.get('testability')]);
       $element.on('click', function(event) {
         event.preventDefault();
         var $content = $('<div class="_quail-accessibility-wysiwyg-popup">');
         $content.append('<h3 class="title">' + test.get('title').en + '</h3>');
         $content.append(test.get('description').en);
-
         var dialog = new CKEDITOR.dialog(editor, 'quailDialog');
         dialog.show();
         $('#quailAccessibilityFeedback').html('').append($content);
