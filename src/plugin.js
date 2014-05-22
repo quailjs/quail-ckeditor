@@ -6,17 +6,24 @@ CKEDITOR.plugins.add( 'quail', {
 
   editor : { },
 
+  quailTests : { },
+
   init: function( editor ) {
+    if (typeof editor.config.quail === 'undefined' ||
+        typeof editor.config.quail.tests === 'undefined') {
+      return;
+    }
     var that = this;
     that.editor = editor;
-
+    $.getJSON(editor.config.quail.path + '/dist/tests.json', function(tests) {
+      that.quailTests = quail.lib.TestCollection(tests);
+    });
     CKEDITOR.addCss(quailCss);
 
     editor.addCommand( 'quailFeedbackDialog', new CKEDITOR.dialogCommand( 'quailFeedbackDialog' ));
 
     editor.addCommand( 'quailCheckContent', {
       exec : function( editor ) {
-        editor;
         if (that.active) {
           that.removeMarkup(editor);
           this.setState( CKEDITOR.TRISTATE_OFF );
@@ -30,7 +37,7 @@ CKEDITOR.plugins.add( 'quail', {
       }
     });
 
-    CKEDITOR.dialog.add( 'quailDialog', function( editor ) {
+    CKEDITOR.dialog.add( 'quailDialog', function( ) {
       return {
         title: 'Accessibility feedback',
         minWidth: 400,
@@ -40,11 +47,11 @@ CKEDITOR.plugins.add( 'quail', {
             id: 'feedback',
             label: 'Feedback',
             elements: [
-                {
-                  type:           'html',
-                  id:             'quailAccessibilityFeedback',
-                  html: '<div id="quailAccessibilityFeedback"></div>'
-                }
+              {
+                type:           'html',
+                id:             'quailAccessibilityFeedback',
+                html: '<div id="quailAccessibilityFeedback"></div>'
+              }
             ]
           }
         ]
@@ -75,20 +82,31 @@ CKEDITOR.plugins.add( 'quail', {
 
   checkContent : function(editor) {
     var that = this;
-    $(editor.document.getDocumentElement().$).find('strong').each(function() {
-      that.highlightElement($(this), {severity: 'severe'}, editor);
+    var $scope = $(editor.document.getDocumentElement().$);
+    var testsToEvaluate = quail.lib.TestCollection();
+    $.each(editor.config.quail.tests, function(index, testName) {
+      var testDefinition = that.quailTests.find(testName);
+      testDefinition.set('scope', $scope.get());
+      testsToEvaluate.add(testDefinition);
+    });
+    testsToEvaluate.run({
+      caseResolve: function(eventName, thisTest, _case) {
+        if (_case.get('status') === 'failed') {
+          that.highlightElement($(_case.get('element')), thisTest, that.editor);
+        }
+      }
     });
   },
 
-  highlightElement : function($element, event, editor) {
+  highlightElement : function($element, test, editor) {
     if (!$element.hasClass('_quail-accessibility-result')) {
       $element.addClass('_quail-accessibility-result')
-              .addClass('_quail-' + event.severity);
+              .addClass('_quail-' + test.get('severity'));
       $element.on('click', function(event) {
         event.preventDefault();
         var $content = $('<div class="_quail-accessibility-wysiwyg-popup">');
-        $content.append('<h3 class="title">' + 'Test title' + '</h3>');
-        $content.append('test message');
+        $content.append('<h3 class="title">' + test.get('title').en + '</h3>');
+        $content.append(test.get('description').en);
 
         var dialog = new CKEDITOR.dialog(editor, 'quailDialog');
         dialog.show();
