@@ -1,5 +1,7 @@
 CKEDITOR.plugins.add( 'quail', {
 
+  requires: 'dialog',
+
   icons : 'quail',
 
   active : false,
@@ -24,6 +26,7 @@ CKEDITOR.plugins.add( 'quail', {
     $.getJSON(editor.config.quail.path + '/dist/tests.json', function(tests) {
       that.quailTests = quail.lib.TestCollection(tests);
     });
+
     CKEDITOR.addCss(quailCss);
 
     editor.addCommand( 'quailFeedbackDialog', new CKEDITOR.dialogCommand( 'quailFeedbackDialog' ));
@@ -33,13 +36,12 @@ CKEDITOR.plugins.add( 'quail', {
         if (that.active) {
           that.removeMarkup(editor);
           this.setState( CKEDITOR.TRISTATE_OFF );
-          that.active = false;
         }
         else {
           that.checkContent(editor);
           this.setState( CKEDITOR.TRISTATE_ON );
-          that.active = true;
         }
+        that.active = !that.active;
       }
     });
 
@@ -64,7 +66,6 @@ CKEDITOR.plugins.add( 'quail', {
       };
     });
 
-		// Register the button, if the button plugin is loaded.
     if ( editor.ui.addButton ) {
       editor.ui.addButton( 'Quail', {
         title: 'Check content for accessibility',
