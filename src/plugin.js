@@ -23,6 +23,9 @@ CKEDITOR.plugins.add( 'quail', {
     }
     var that = this;
     that.editor = editor;
+    //We have to manually load the dialog skin because
+    //the dialog is not in a definition file.
+    CKEDITOR.skin.loadPart( 'dialog' );
     $.getJSON(editor.config.quail.path + '/dist/tests.json', function(tests) {
       that.quailTests = quail.lib.TestCollection(tests);
     });
