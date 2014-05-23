@@ -97,15 +97,21 @@ CKEDITOR.plugins.add( 'quail', {
     $.each(editor.config.quail.tests, function(index, testName) {
       var testDefinition = that.quailTests.find(testName);
       testDefinition.set('scope', $scope.get());
+      testDefinition.set('complete', false);
       testsToEvaluate.add(testDefinition);
     });
-    testsToEvaluate.run({
-      caseResolve: function(eventName, thisTest, _case) {
-        if (_case.get('status') === 'failed') {
-          that.highlightElement($(_case.get('element')), thisTest, that.editor);
+    try {
+      testsToEvaluate.run({
+        caseResolve: function(eventName, thisTest, _case) {
+          if (_case.get('status') === 'failed') {
+            that.highlightElement($(_case.get('element')), thisTest, that.editor);
+          }
         }
-      }
-    });
+      });
+    }
+    catch (e) {
+
+    }
   },
 
   highlightElement : function($element, test, editor) {
@@ -120,7 +126,6 @@ CKEDITOR.plugins.add( 'quail', {
         var dialog = new CKEDITOR.dialog(editor, 'quailDialog');
         dialog.show();
         $('#quailAccessibilityFeedback').html('').append($content);
-
       });
     }
   }
