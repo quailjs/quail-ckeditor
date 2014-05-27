@@ -48,6 +48,17 @@ module.exports = function(grunt) {
       options: {
         banner: '<%= pkg.options.banner %>' + "\n"
       }
+    },
+    copy: {
+      main: {
+        files: [
+          {
+            expand: true,
+            src: ['plugin.js', 'img/**'],
+            dest: 'lib/ckeditor/plugins/quail/'
+          }
+        ]
+      }
     }
   });
   grunt.loadNpmTasks('grunt-contrib-qunit');
@@ -56,7 +67,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-bower-task');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
   // By default, just run tests
-  grunt.registerTask('default', ['bower:install', 'jshint', 'concat', 'uglify']);
+  grunt.registerTask('default', ['bower:install', 'jshint', 'concat', 'copy', 'uglify']);
 };
