@@ -5,7 +5,9 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     bower: {
-      install: { }
+      install: {
+        cleanBowerDir: true
+      }
     },
     jshint: {
       options: {
@@ -58,6 +60,23 @@ module.exports = function(grunt) {
             dest: 'lib/ckeditor/plugins/quail/'
           }
         ]
+      },
+      quail: {
+        files: [
+          {
+            expand: true,
+            cwd: 'bower_components/quail/',
+            src: ['**'],
+            dest: 'lib/quail/'
+          }
+        ]
+      }
+    },
+    subgrunt: {
+      quail: {
+        projects: {
+          'bower_components/quail': ['convert', 'concat:dist']
+        }
       }
     }
   });
@@ -68,7 +87,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-subgrunt');
 
   // By default, just run tests
-  grunt.registerTask('default', ['bower:install', 'jshint', 'concat', 'copy', 'uglify']);
+  grunt.registerTask('default', ['bower:install', 'subgrunt', 'jshint', 'concat', 'copy', 'uglify']);
+
 };

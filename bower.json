@@ -1,7 +1,7 @@
 {
   "name": "quail-ckeditor",
   "version": "0.0.1",
-  "main": "dist/*",
+  "main": "/",
   "ignore": [
     ".jshintrc"
   ],
@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "qunit": "~1.14.0",
-    "ckeditor": "~4.4.1"
+    "ckeditor": "~4.4.1",
+    "quail": "~2.2.0"
   }
 }
