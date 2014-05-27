@@ -26,8 +26,11 @@
   height: 23px;
   margin-right: -23px;
   display: inline-block;
+  cursor: pointer;
   z-index: 1000;
   position: absolute;
+  outline: none;
+  border: none;
 }
 
 ._quail-accessibility-icon-current {

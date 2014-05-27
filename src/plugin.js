@@ -59,8 +59,8 @@ CKEDITOR.plugins.add( 'quail', {
             label: 'Feedback',
             elements: [
               {
-                type:           'html',
-                id:             'quailAccessibilityFeedback',
+                type: 'html',
+                id: 'quailAccessibilityFeedback',
                 html: '<div id="quailAccessibilityFeedback"></div>'
               }
             ]
@@ -116,9 +116,21 @@ CKEDITOR.plugins.add( 'quail', {
 
   highlightElement : function($element, test, editor) {
     if (!$element.hasClass('_quail-accessibility-result')) {
+      var severity = this.severity[test.get('testability')];
+      var $image = $('<img>')
+                     .attr('alt', 'Accessibility error')
+                     .attr('src', this.path + 'img/' + severity + '.png');
+      var $link = $('<a>')
+        .attr('href', '#')
+        .attr('role', 'command')
+        .addClass('_quail-accessibility-icon')
+        .addClass(severity)
+        .append($image);
       $element.addClass('_quail-accessibility-result')
-              .addClass('_quail-' + this.severity[test.get('testability')]);
-      $element.on('click', function(event) {
+              .addClass('_quail-' + severity)
+              .before($link);
+
+      $element.add($link).on('click', function(event) {
         event.preventDefault();
         var $content = $('<div class="_quail-accessibility-wysiwyg-popup">');
         $content.append('<h3 class="title">' + test.get('title').en + '</h3>');
