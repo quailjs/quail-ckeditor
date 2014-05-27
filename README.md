@@ -8,8 +8,7 @@ Installation
 
 To use the plugin, download and install in the `plugins` directory of your ckeditor installation.
 
-Developer installation
-###
+### Developer installation
 
 If you would like to run the examples or do development, you will need to use **[Grunt](http://gruntjs.com)** and run the default grunt command.
 
@@ -35,15 +34,12 @@ CKEDITOR.replace( 'editor',
   });
 ```
 
-Options
-###
+### Options
 
-quail.path
-####
+#### quail.path
 
 The relative or absolute path to the (quail library)[http://github.com/quail/quailjs] so test definitions can be run.
 
-quail.tests
-####
+#### quail.tests
 
 An array of [quail test names](http://quailjs.org/#/accessibility-tests) that should be run against content.
