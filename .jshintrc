@@ -6,7 +6,6 @@
   "eqnull": true,
   "expr": true,
   "forin": true,
-  "loopfunc": true,
   "globals": {
     "quail": true,
     "CKEDITOR": true,
