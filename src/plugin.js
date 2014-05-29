@@ -129,15 +129,21 @@ CKEDITOR.plugins.add( 'quail', {
       $element.addClass('_quail-accessibility-result')
               .addClass('_quail-' + severity)
               .before($link);
-
-      $element.add($link).on('click', function(event) {
-        event.preventDefault();
-        var $content = $('<div class="_quail-accessibility-wysiwyg-popup">');
-        $content.append('<h3 class="title">' + test.get('title').en + '</h3>');
-        $content.append(test.get('description').en);
-        var dialog = new CKEDITOR.dialog(editor, 'quailDialog');
-        dialog.show();
-        $('#quailAccessibilityFeedback').html('').append($content);
+      $element.add($link)
+        .data('editorLanguage', editor.config.language)
+        .data('quailTest', test)
+        .on('click', function(event) {
+          event.preventDefault();
+          var test = $(this).data('quailTest');
+          var language = (typeof test.get('title')[$(this).data('editorLanguage')] !== 'undefined') ?
+            $(this).data('editorLanguage') :
+            'en';
+          var $content = $('<div class="_quail-accessibility-wysiwyg-popup">');
+          $content.append('<h3 class="title">' + test.get('title')[language] + '</h3>');
+          $content.append(test.get('description')[language]);
+          var dialog = new CKEDITOR.dialog(editor, 'quailDialog');
+          dialog.show();
+          $('#quailAccessibilityFeedback').html($content);
       });
     }
   }
