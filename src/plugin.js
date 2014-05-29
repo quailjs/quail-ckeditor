@@ -61,7 +61,7 @@ CKEDITOR.plugins.add( 'quail', {
               {
                 type: 'html',
                 id: 'quailAccessibilityFeedback',
-                html: '<div id="quailAccessibilityFeedback"></div>'
+                html: ''
               }
             ]
           }
@@ -143,8 +143,8 @@ CKEDITOR.plugins.add( 'quail', {
           $content.append(test.get('description')[language]);
           var dialog = new CKEDITOR.dialog(editor, 'quailDialog');
           dialog.show();
-          $('#quailAccessibilityFeedback').html($content);
-      });
+          $(dialog.getContentElement('feedback', 'quailAccessibilityFeedback').getElement().$).html($content);
+        });
     }
   }
 });
