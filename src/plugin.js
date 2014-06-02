@@ -65,7 +65,8 @@ CKEDITOR.plugins.add( 'quail', {
               }
             ]
           }
-        ]
+        ],
+        buttons: [ CKEDITOR.dialog.okButton ]
       };
     });
 
@@ -139,7 +140,7 @@ CKEDITOR.plugins.add( 'quail', {
             $(this).data('editorLanguage') :
             'en';
           var $content = $('<div class="_quail-accessibility-wysiwyg-popup">');
-          $content.append('<h3 class="title">' + test.get('title')[language] + '</h3>');
+          $content.append('<h3 class="_quail-title" style="font-weight: bold; font-size: 170%;">' + test.get('title')[language] + '</h3>');
           $content.append(test.get('description')[language]);
           var dialog = new CKEDITOR.dialog(editor, 'quailDialog');
           dialog.show();
