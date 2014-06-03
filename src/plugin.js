@@ -48,6 +48,10 @@ CKEDITOR.plugins.add( 'quail', {
       }
     });
 
+    CKEDITOR.on('instanceDestroyed', function(event) {
+      that.removeMarkup(event.editor);
+    });
+
     CKEDITOR.dialog.add( 'quailDialog', function( ) {
       return {
         title: 'Accessibility feedback',
@@ -103,6 +107,11 @@ CKEDITOR.plugins.add( 'quail', {
     });
     try {
       testsToEvaluate.run({
+        preFilter: function (testName, element) {
+          if ($(element).is('._quail-accessibility-icon, ._quail-accessibility-result')) {
+            return false;
+          }
+        },
         caseResolve: function(eventName, thisTest, _case) {
           if (_case.get('status') === 'failed') {
             that.highlightElement($(_case.get('element')), thisTest, that.editor);
@@ -116,36 +125,37 @@ CKEDITOR.plugins.add( 'quail', {
   },
 
   highlightElement : function($element, test, editor) {
-    if (!$element.hasClass('_quail-accessibility-result')) {
-      var severity = this.severity[test.get('testability')];
-      var $image = $('<img>')
-                     .attr('alt', 'Accessibility error')
-                     .attr('src', this.path + 'img/' + severity + '.png');
-      var $link = $('<a>')
-        .attr('href', '#')
-        .attr('role', 'command')
-        .addClass('_quail-accessibility-icon')
-        .addClass(severity)
-        .append($image);
-      $element.addClass('_quail-accessibility-result')
-              .addClass('_quail-' + severity)
-              .before($link);
-      $element.add($link)
-        .data('editorLanguage', editor.config.language)
-        .data('quailTest', test)
-        .on('click', function(event) {
-          event.preventDefault();
-          var test = $(this).data('quailTest');
-          var language = (typeof test.get('title')[$(this).data('editorLanguage')] !== 'undefined') ?
-            $(this).data('editorLanguage') :
-            'en';
-          var $content = $('<div class="_quail-accessibility-wysiwyg-popup">');
-          $content.append('<h3 class="_quail-title" style="font-weight: bold; font-size: 170%;">' + test.get('title')[language] + '</h3>');
-          $content.append(test.get('description')[language]);
-          var dialog = new CKEDITOR.dialog(editor, 'quailDialog');
-          dialog.show();
-          $(dialog.getContentElement('feedback', 'quailAccessibilityFeedback').getElement().$).html($content);
-        });
+    if ($element.hasClass('_quail-accessibility-result')) {
+      return;
     }
+    var severity = this.severity[test.get('testability')];
+    var $image = $('<img>')
+                   .attr('alt', 'Accessibility error')
+                   .attr('src', this.path + 'img/' + severity + '.png');
+    var $link = $('<a>')
+      .attr('href', '#')
+      .attr('role', 'command')
+      .addClass('_quail-accessibility-icon')
+      .addClass(severity)
+      .append($image);
+    $element.addClass('_quail-accessibility-result')
+            .addClass('_quail-' + severity)
+            .before($link);
+    $element.add($link)
+      .data('editorLanguage', editor.config.language)
+      .data('quailTest', test)
+      .on('click', function(event) {
+        event.preventDefault();
+        var test = $(this).data('quailTest');
+        var language = (typeof test.get('title')[$(this).data('editorLanguage')] !== 'undefined') ?
+          $(this).data('editorLanguage') :
+          'en';
+        var $content = $('<div class="_quail-accessibility-wysiwyg-popup">');
+        $content.append('<h3 class="_quail-title" style="font-weight: bold; font-size: 170%;">' + test.get('title')[language] + '</h3>');
+        $content.append(test.get('description')[language]);
+        var dialog = new CKEDITOR.dialog(editor, 'quailDialog');
+        dialog.show();
+        $(dialog.getContentElement('feedback', 'quailAccessibilityFeedback').getElement().$).html($content);
+      });
   }
 });
