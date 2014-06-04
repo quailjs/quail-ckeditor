@@ -39,10 +39,12 @@ CKEDITOR.plugins.add( 'quail', {
         if (that.active) {
           that.removeMarkup(editor);
           this.setState( CKEDITOR.TRISTATE_OFF );
+          editor.removeListener('change', that.onChangeEvent);
         }
         else {
           that.checkContent(editor);
           this.setState( CKEDITOR.TRISTATE_ON );
+          editor.on('change', that.onChangeEvent);
         }
         that.active = !that.active;
       }
@@ -81,6 +83,15 @@ CKEDITOR.plugins.add( 'quail', {
         icon: this.path + 'img/quail.png'
       });
 		}
+  },
+
+  onChangeEvent : function(event) {
+    var $context = $(event.editor.document.getDocumentElement().$);
+    $context.find('._quail-accessibility-icon').each(function() {
+      if($(this).next('._quail-accessibility-result').length === 0) {
+        $(this).remove();
+      }
+    });
   },
 
   removeMarkup : function(editor) {
