@@ -75,7 +75,7 @@ module.exports = function(grunt) {
     subgrunt: {
       quail: {
         projects: {
-          'bower_components/quail': ['convert', 'concat:dist']
+          'bower_components/quail': ['convert', 'concat', 'buildTestFilesJson', 'buildGuideline', 'compressTestsJson', 'uglify']
         }
       }
     }
