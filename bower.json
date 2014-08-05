@@ -6,7 +6,7 @@
     ".jshintrc"
   ],
   "dependencies": {
-    "quail": "~2.2.0"
+    "quail": "~2.2.5"
   },
   "devDependencies": {
     "qunit": "~1.14.0",
