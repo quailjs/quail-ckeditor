@@ -112,6 +112,7 @@ CKEDITOR.plugins.add( 'quail', {
     var testsToEvaluate = quail.lib.TestCollection();
     $.each(editor.config.quail.tests, function(index, testName) {
       var testDefinition = that.quailTests.find(testName);
+      testDefinition = quail.lib.Test(testDefinition.get('name'), testDefinition.attributes);
       testDefinition.set('scope', $scope.get());
       testDefinition.set('complete', false);
       testsToEvaluate.add(testDefinition);
